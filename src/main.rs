@@ -16,15 +16,24 @@ struct Bar {
     interval: i32,
 }
 
+impl Bar {
+    fn run(&self) -> String {
+        let out = Command::new(&self.command)
+            .args(self.args.as_ref().unwrap_or(&vec![]))
+            .output()
+            .expect("Error occurred");
+        let res = String::from_utf8_lossy(&out.stdout);
+        return format!("{}: {}", self.name, res.trim());
+    }
+}
+
 fn main() -> Result<(), std::io::Error> {
     let bars_as_toml = std::fs::read_to_string("bars.toml")?;
     let bars: Bars = toml::from_str(&bars_as_toml).unwrap();
 
-    let out = Command::new("./bars/date_time_component.sh")
-        .output()
-        .expect("Error occurred");
-    let time = String::from_utf8_lossy(&out.stdout);
-    let status = format!("Time: {}", time);
+    let status: Vec<String> = bars.bar.into_iter().map(|b| b.run()).collect();
+
+    let status = status.join(" | ");
     let _ = Command::new("xsetroot").arg("-name").arg(status).output();
 
     Ok(())

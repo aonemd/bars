@@ -1,5 +1,9 @@
 [[bar]]
-name = "date and time"
+name = "Time"
 command = "date"
 args = ['+%a %b %d %I:%M %p']
+interval = 60
+[[bar]]
+name = "Bat"
+command = "./bars/battery_level_component"
 interval = 60
