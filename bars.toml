@@ -1,0 +1,4 @@
+[[bar]]
+name = "date and time"
+command = "./bars/date_time_component.sh"
+interval = 60
