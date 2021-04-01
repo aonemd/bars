@@ -31,7 +31,7 @@ fn main() -> Result<(), std::io::Error> {
     let bars_as_toml = std::fs::read_to_string("bars.toml")?;
     let bars: Bars = toml::from_str(&bars_as_toml).unwrap();
 
-    let status: Vec<String> = bars.bar.into_iter().map(|b| b.run()).collect();
+    let status: Vec<String> = bars.bar.into_iter().map(|b| b.run()).rev().collect();
 
     let status = status.join(" | ");
     let _ = Command::new("xsetroot").arg("-name").arg(status).output();
