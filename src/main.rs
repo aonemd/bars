@@ -12,6 +12,7 @@ struct Bars {
 struct Bar {
     name: String,
     command: String,
+    args: Option<Vec<String>>,
     interval: i32,
 }
 

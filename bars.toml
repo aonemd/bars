@@ -1,4 +1,5 @@
 [[bar]]
 name = "date and time"
-command = "./bars/date_time_component.sh"
+command = "date"
+args = ['+%a %b %d %I:%M %p']
 interval = 60
