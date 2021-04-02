@@ -90,7 +90,7 @@ impl Bar {
             .output()
             .expect("Error occurred");
         let res = String::from_utf8_lossy(&out.stdout);
-        let status_message = format!("{}: {}", self.name, res.trim());
+        let status_message = format!("{}{}", self.name, res.trim());
         Message(self.order, status_message)
     }
 }
