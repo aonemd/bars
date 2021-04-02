@@ -56,7 +56,7 @@ impl Bars {
             status.insert(received.0, received.1);
 
             let mut col: Vec<_> = status.iter().collect();
-            col.sort_by(|a, b| a.0.cmp(&b.0));
+            col.sort_by(|a, b| b.0.cmp(&a.0));
             let sorted_status: Vec<String> = col.iter().map(|e| (e.1).to_string()).collect();
 
             let status = sorted_status.join(" | ");
