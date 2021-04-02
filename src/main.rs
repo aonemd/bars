@@ -7,10 +7,13 @@ use serde::Deserialize;
 use toml;
 
 #[derive(Debug)]
-struct BarChannel<String>(SyncSender<String>, Receiver<String>);
-impl Default for BarChannel<String> {
+struct Message(u32, String);
+
+#[derive(Debug)]
+struct BarChannel<Message>(SyncSender<Message>, Receiver<Message>);
+impl Default for BarChannel<Message> {
     fn default() -> Self {
-        let (sender, receiver) = sync_channel::<String>(0);
+        let (sender, receiver) = sync_channel::<Message>(0);
         Self(sender, receiver)
     }
 }
@@ -20,7 +23,7 @@ struct Bars {
     bar: Vec<Bar>,
 
     #[serde(skip)]
-    channel: BarChannel<String>,
+    channel: BarChannel<Message>,
 }
 
 impl Bars {
@@ -43,7 +46,7 @@ impl Bars {
         }
 
         for received in &self.channel.1 {
-            println!("Got: {}", received);
+            println!("Got: {}", received.1);
         }
 
     }
@@ -56,24 +59,25 @@ struct Bar {
     args: Option<Vec<String>>,
     interval: u64,
     #[serde(skip, default = "default_channel_sender")]
-    sender: SyncSender<String>,
+    sender: SyncSender<Message>,
     #[serde(skip)]
     order: u32,
 }
 
-fn default_channel_sender() -> SyncSender<String> {
-    let (_sender, _) = sync_channel::<String>(0);
+fn default_channel_sender() -> SyncSender<Message> {
+    let (_sender, _) = sync_channel::<Message>(0);
     _sender
 }
 
 impl Bar {
-    fn run(&self) -> String {
+    fn run(&self) -> Message {
         let out = Command::new(&self.command)
             .args(self.args.as_ref().unwrap_or(&vec![]))
             .output()
             .expect("Error occurred");
         let res = String::from_utf8_lossy(&out.stdout);
-        return format!("{}: {}", self.name, res.trim());
+        let status_message = format!("{}: {}", self.name, res.trim());
+        Message(self.order, status_message)
     }
 }
 
