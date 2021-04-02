@@ -11,3 +11,7 @@ interval = 60
 name = " "
 command = "./bars/kb_layout.sh"
 interval = 1
+[[bar]]
+name = ""
+command = "./bars/darksky_weather.sh"
+interval = 600
