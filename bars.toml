@@ -5,5 +5,5 @@ args = ['+%a %b %d %I:%M %p']
 interval = 60
 [[bar]]
 name = "Bat"
-command = "./bars/battery_level_component"
+command = "./bars/battery.sh"
 interval = 60
