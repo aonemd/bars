@@ -1,3 +1,5 @@
+delim = "  "
+
 [[bar]]
 name = ""
 command = "date"

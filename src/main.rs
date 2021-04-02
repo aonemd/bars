@@ -28,6 +28,7 @@ impl Default for BarChannel<Message> {
 #[derive(Debug, Deserialize)]
 struct Bars {
     bar: Vec<Bar>,
+    delim: Option<String>,
 
     #[serde(skip)]
     channel: BarChannel<Message>,
@@ -42,6 +43,8 @@ impl Bars {
     }
 
     pub fn run(self, status: &mut HashMap<usize, String>) {
+        let delimeter = self.delim.unwrap_or(String::from(" "));
+
         for bar in self.bar.into_iter() {
             thread::spawn(move || {
                 loop {
@@ -59,7 +62,7 @@ impl Bars {
             col.sort_by(|a, b| b.0.cmp(&a.0));
             let sorted_status: Vec<String> = col.iter().map(|e| (e.1).to_string()).collect();
 
-            let status = sorted_status.join(" | ");
+            let status = sorted_status.join(&delimeter.to_string());
             let _ = Command::new("xsetroot").arg("-name").arg(status).output();
         }
 
