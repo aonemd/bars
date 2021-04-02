@@ -1,8 +1,8 @@
 [[bar]]
 name = "Time"
 command = "date"
-args = ['+%a %b %d %I:%M %p']
-interval = 60
+args = ['+%a, %d %b %H:%M']
+interval = 5
 [[bar]]
 name = "Bat"
 command = "./bars/battery.sh"
