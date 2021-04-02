@@ -7,3 +7,7 @@ interval = 5
 name = ""
 command = "./bars/battery.sh"
 interval = 60
+[[bar]]
+name = " "
+command = "./bars/kb_layout.sh"
+interval = 1
