@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::process::Command;
 use std::time::Duration;
 use std::thread;
@@ -7,7 +8,13 @@ use serde::Deserialize;
 use toml;
 
 #[derive(Debug)]
-struct Message(u32, String);
+struct Message(usize, String);
+
+impl PartialEq for Message {
+    fn eq(&self, other: &Self) -> bool {
+        self.0 == other.0
+    }
+}
 
 #[derive(Debug)]
 struct BarChannel<Message>(SyncSender<Message>, Receiver<Message>);
@@ -29,12 +36,12 @@ struct Bars {
 impl Bars {
     pub fn assign_default_attributes(&mut self) {
         for (index, bar) in self.bar.iter_mut().enumerate() {
-            bar.order = (index + 1) as u32;
+            bar.order = index;
             bar.sender = self.channel.0.clone();
         }
     }
 
-    pub fn run(self) {
+    pub fn run(self, status: &mut HashMap<usize, String>) {
         for bar in self.bar.into_iter() {
             thread::spawn(move || {
                 loop {
@@ -46,7 +53,14 @@ impl Bars {
         }
 
         for received in &self.channel.1 {
-            println!("Got: {}", received.1);
+            status.insert(received.0, received.1);
+
+            let mut col: Vec<_> = status.iter().collect();
+            col.sort_by(|a, b| a.0.cmp(&b.0));
+            let sorted_status: Vec<String> = col.iter().map(|e| (e.1).to_string()).collect();
+
+            let status = sorted_status.join(" | ");
+            let _ = Command::new("xsetroot").arg("-name").arg(status).output();
         }
 
     }
@@ -61,7 +75,7 @@ struct Bar {
     #[serde(skip, default = "default_channel_sender")]
     sender: SyncSender<Message>,
     #[serde(skip)]
-    order: u32,
+    order: usize,
 }
 
 fn default_channel_sender() -> SyncSender<Message> {
@@ -85,15 +99,10 @@ fn main() -> Result<(), std::io::Error> {
     let bars_as_toml = std::fs::read_to_string("bars.toml")?;
     let  mut bars: Bars = toml::from_str(&bars_as_toml).unwrap();
 
+    let mut status: HashMap<usize, String> = HashMap::new();
+
     bars.assign_default_attributes();
-    bars.run();
-
-    // println!("{:#?}", bars);
-
-    // let status: Vec<String> = bars.bar.into_iter().map(|b| b.run()).rev().collect();
-
-    // let status = status.join(" | ");
-    // let _ = Command::new("xsetroot").arg("-name").arg(status).output();
+    bars.run(&mut status);
 
     Ok(())
 }
