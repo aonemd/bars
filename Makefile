@@ -5,11 +5,11 @@ default: clean build
 
 build:
 	cargo build --release
-install: stop
+install: kill
 	 cp $(BUILD_PATH) /usr/local/bin
 run:
 	$(BUILD_PATH)&
-stop:
+kill:
 	pkill $(BUILD_NAME) || true
 clean:
 	rm $(BUILD_PATH)
