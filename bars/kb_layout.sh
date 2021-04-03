@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-language=$(setxkbmap -query | awk '/layout/{print $2}')
-layout=${language::2}
-layout=${layout^^}
+main() {
+  language=$(setxkbmap -query | awk '/layout/{print $2}')
+  layout=${language::2}   # limit to 2 characters
+  layout=${layout^^}      # UPCASE
 
-echo "$layout"
+  echo "$layout"
 
-exit 0
+  exit 0
+}
+
+main "$@"

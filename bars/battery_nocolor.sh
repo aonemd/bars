@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
-parse_battery_details() {
-  local battery_device=${BATTERY_NUMBER:=0}
-  local response=$(acpi -b | grep "Battery ${battery_device}")
+main() {
+  print_battery
 
-  state=$(echo "${response}" | grep -wo 'Full\|Charging\|Discharging')
-  power=$(echo "${response}" | grep -o '[0-9]\+%' | tr -d '%')
-  remaining_time=$(echo "${response}" | grep -o '[01][0-9]:[0-9][0-9]')
+  exit 0
 }
 
 print_battery() {
@@ -45,6 +42,13 @@ print_battery() {
   echo "${battery}"
 }
 
-print_battery
+parse_battery_details() {
+  local battery_device=${BATTERY_NUMBER:=0}
+  local response=$(acpi -b | grep "Battery ${battery_device}")
 
-exit 0
+  state=$(echo "${response}" | grep -wo 'Full\|Charging\|Discharging')
+  power=$(echo "${response}" | grep -o '[0-9]\+%' | tr -d '%')
+  remaining_time=$(echo "${response}" | grep -o '[01][0-9]:[0-9][0-9]')
+}
+
+main "$@"

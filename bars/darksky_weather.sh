@@ -1,23 +1,9 @@
 #!/usr/bin/env bash
 
-parse_weather_details() {
-  local api_key=$WEATHER_API_KEY
-  local city_id=$WEATHER_CITY_GEOLOCATION
-  local api_parameters="exclude=minutely,hourly,daily,alerts,flags&units=si"
-  local api_url="https://api.darksky.net/forecast/${api_key}/${city_id}?${api_parameters}"
+main() {
+  print_weather
 
-  local response=$(curl -s "${api_url}")
-  [[ -z $response ]] && exit 0
-
-  forecast=$(echo "${response}" \
-    | grep -o -e '\"icon\":\"[a-zA-Z-]*\"' \
-    | awk -F ':' '{print $2}' \
-    | tr -d '"')
-
-  temperature=$(echo "${response}" \
-    | grep -o -e '\"temperature\":\-\?[0-9]*' \
-    | awk -F ':' '{print $2}' \
-    | tr -d '"')
+  exit 0
 }
 
 print_weather() {
@@ -54,6 +40,24 @@ print_weather() {
   echo "${weather}"
 }
 
-print_weather
+parse_weather_details() {
+  local api_key=$WEATHER_API_KEY
+  local city_id=$WEATHER_CITY_GEOLOCATION
+  local api_parameters="exclude=minutely,hourly,daily,alerts,flags&units=si"
+  local api_url="https://api.darksky.net/forecast/${api_key}/${city_id}?${api_parameters}"
 
-exit 0
+  local response=$(curl -s "${api_url}")
+  [[ -z $response ]] && exit 0
+
+  forecast=$(echo "${response}" \
+    | grep -o -e '\"icon\":\"[a-zA-Z-]*\"' \
+    | awk -F ':' '{print $2}' \
+    | tr -d '"')
+
+  temperature=$(echo "${response}" \
+    | grep -o -e '\"temperature\":\-\?[0-9]*' \
+    | awk -F ':' '{print $2}' \
+    | tr -d '"')
+}
+
+main "$@"
