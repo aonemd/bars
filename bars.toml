@@ -10,6 +10,10 @@ name = ""
 command = "./bars/battery.sh"
 interval = 5
 [[bar]]
+name = ""
+command = "./bars/volume.sh"
+interval = 1
+[[bar]]
 name = " "
 command = "./bars/kb_layout.sh"
 interval = 1
