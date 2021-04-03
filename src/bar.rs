@@ -4,6 +4,7 @@ use std::time::Duration;
 use std::thread;
 use std::sync::mpsc::{sync_channel, SyncSender, Receiver};
 
+use toml;
 use serde::Deserialize;
 
 #[derive(Debug)]
@@ -25,15 +26,6 @@ impl Default for BarChannel<Message> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Runner {
-    bar: Vec<Bar>,
-    delim: Option<String>,
-
-    #[serde(skip)]
-    channel: BarChannel<Message>,
-}
-
-#[derive(Debug, Deserialize)]
 struct Bar {
     label: String,
     command: String,
@@ -45,14 +37,26 @@ struct Bar {
     order: usize,
 }
 
-impl Runner {
-    pub fn assign_default_attributes(&mut self) {
-        for (index, bar) in self.bar.iter_mut().enumerate() {
-            bar.order = index;
-            bar.sender = self.channel.0.clone();
-        }
-    }
+#[derive(Debug, Deserialize)]
+pub struct Runner {
+    bar: Vec<Bar>,
+    delim: Option<String>,
 
+    #[serde(skip)]
+    channel: BarChannel<Message>,
+}
+
+impl From<String> for Runner {
+    fn from(config: String) -> Self {
+        let mut new_runner: Runner = toml::from_str(&config).unwrap();
+
+        new_runner.assign_default_attributes();
+
+        new_runner
+    }
+}
+
+impl Runner {
     pub fn run(self, status: &mut HashMap<usize, String>) {
         let delimeter = self.delim.unwrap_or(String::from(" "));
 
@@ -77,6 +81,13 @@ impl Runner {
             let _ = Command::new("xsetroot").arg("-name").arg(status).output();
         }
 
+    }
+
+    fn assign_default_attributes(&mut self) {
+        for (index, bar) in self.bar.iter_mut().enumerate() {
+            bar.order = index;
+            bar.sender = self.channel.0.clone();
+        }
     }
 }
 
