@@ -12,9 +12,9 @@ main() {
 
 print_volume() {
   local speaker_up_icon=""
-  local speaker_mute_icon="^c#f22c40^ MUTE^c#a8a19f^"
+  local speaker_mute_icon=" MUTE"
   local headphone_up_icon=""
-  local headphone_mute_icon="^c#f22c40^ MUTE^c#a8a19f^"
+  local headphone_mute_icon=" MUTE"
 
   parse_volume
   case "${state}" in
