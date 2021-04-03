@@ -5,8 +5,8 @@ default: clean build
 
 build:
 	cargo build --release
-install: default stop
-	cp $(BUILD_PATH) /usr/local/bin
+install: stop
+	 cp $(BUILD_PATH) /usr/local/bin
 run:
 	$(BUILD_PATH)&
 stop:
