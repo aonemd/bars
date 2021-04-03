@@ -33,6 +33,9 @@ print_weather() {
   local fog_icon=''
   local celsius_icon='°C'
 
+  local fg_color='^c#a8a19f^'
+  local icon_color='^c#f1efee^'
+
   parse_weather_details
   case "${forecast}" in
     clear-day)            current_icon=$clear_day_icon;;
@@ -47,7 +50,7 @@ print_weather() {
     fog)                  current_icon=$fog_icon;;
   esac
 
-  weather="${current_icon} ${temperature}${celsius_icon}"
+  weather="${icon_color}${current_icon} ${fg_color}${temperature}${celsius_icon}"
   echo "${weather}"
 }
 
