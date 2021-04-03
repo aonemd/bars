@@ -10,7 +10,7 @@ parse_battery_details() {
 }
 
 print_battery() {
-  local critical_level=10
+  local critical_level=30
 
   local charging_icon=''
   local full_icon=' '
