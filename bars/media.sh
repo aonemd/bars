@@ -19,8 +19,11 @@ print_media() {
     current_icon=$stop_icon
   fi
 
-  media="${current_icon} ${artist} - ${title}"
-  echo "${media}"
+  # if no artist or no title are found, quit
+  if [ ! -z "$artist" -o ! -z "$title" ]; then
+    media="${current_icon} ${artist} - ${title}"
+    echo "${media}"
+  fi
 }
 
 parse_media() {
@@ -29,7 +32,6 @@ parse_media() {
   title=$(echo "$response" | grep -o ':title\s*\(.*\)' | sed 's/:title\s*//g')
 
   status=$(playerctl metadata --format '{{lc(status)}}')
-
 }
 
 main "$@"
