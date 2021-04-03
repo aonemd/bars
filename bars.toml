@@ -1,23 +1,23 @@
 delim = "  "
 
 [[bar]]
-name = ""
+label = ""
 command = "date"
 args = ['+%a, %d %b %H:%M']
 interval = 5
 [[bar]]
-name = ""
+label = ""
 command = "./bars/battery.sh"
 interval = 5
 [[bar]]
-name = ""
+label = ""
 command = "./bars/volume.sh"
 interval = 1
 [[bar]]
-name = " "
+label = " "
 command = "./bars/kb_layout.sh"
 interval = 1
 [[bar]]
-name = ""
+label = ""
 command = "./bars/darksky_weather.sh"
 interval = 600

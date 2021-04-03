@@ -71,7 +71,7 @@ impl Bars {
 
 #[derive(Debug, Deserialize)]
 struct Bar {
-    name: String,
+    label: String,
     command: String,
     args: Option<Vec<String>>,
     interval: u64,
@@ -93,7 +93,7 @@ impl Bar {
             .output()
             .expect("Error occurred");
         let res = String::from_utf8_lossy(&out.stdout);
-        let status_message = format!("{}{}", self.name, res.trim());
+        let status_message = format!("{}{}", self.label, res.trim());
         Message(self.order, status_message)
     }
 }
