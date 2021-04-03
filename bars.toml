@@ -30,6 +30,6 @@ label = ""
 command = "./bars/media.sh"
 interval = 2
 [[bar]]
-label = " "
+label = ""
 command = "./bars/archlinux_updates.sh"
 interval=86400
