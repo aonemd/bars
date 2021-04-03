@@ -17,38 +17,38 @@ print_battery() {
   local three_quarter_icon=''
   local half_icon=''
   local empty_icon=''
-  local fg_color='#a8a19f'
+  local fg_color='^c#a8a19f^'
 
   parse_battery_details
   case "${state}" in
     Full)
       current_icon=$full_icon
-      icon_color='#5ab738'
+      icon_color='^c#5ab738^'
       ;;
     Charging)
       current_icon=$charging_icon
-      icon_color='#ffd700'
+      icon_color='^c#ffd700^'
       ;;
     Discharging)
       if [[ "${power}" -le "${critical_level}" ]]; then
         current_icon=$empty_icon
-        icon_color='#f22c40'
+        icon_color='^c#f22c40^'
       elif [[ "${power}" -le '50' ]]; then
         current_icon=$half_icon
-        icon_color='#d78700'
+        icon_color='^c#d78700^'
       elif [[ "${power}" -le '75' ]]; then
         current_icon=$three_quarter_icon
         icon_color=$fg_color
       else
         current_icon=$full_icon
-        icon_color='#5ab738'
+        icon_color='^c#5ab738^'
       fi
       ;;
   esac
 
   [[ -n $remaining_time ]] && remaining_time="(${remaining_time})"
 
-  battery="^c${icon_color}^${current_icon}^c${fg_color}^${power}% ${remaining_time}"
+  battery="${icon_color}${current_icon}${fg_color}${power}% ${remaining_time}"
   echo "${battery}"
 }
 
