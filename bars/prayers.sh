@@ -24,7 +24,7 @@ print_prayer() {
     prayer="${prayer_name} ${prayer_time}"
   fi
 
-  echo "^c#5faf5f^ ${prayer}^c#a8a19f^"
+  echo "^c#5faf5f^ ${prayer}^c#a8a19f^"
 }
 
 parse_prayer_times() {
