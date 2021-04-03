@@ -1,16 +1,13 @@
 delim = "  "
 
 [[bar]]
-label = ""
 command = "date"
 args = ['+%a, %d %b %H:%M']
 interval = 5
 [[bar]]
-label = ""
 command = "./bars/battery.sh"
 interval = 5
 [[bar]]
-label = ""
 command = "./bars/volume.sh"
 interval = 1
 [[bar]]
@@ -18,18 +15,14 @@ label = " "
 command = "./bars/kb_layout.sh"
 interval = 1
 [[bar]]
-label = ""
 command = "./bars/darksky_weather.sh"
 interval = 600
 [[bar]]
-label = ""
 command = "./bars/prayers.sh"
 interval=600
 [[bar]]
-label = ""
 command = "./bars/media.sh"
 interval = 2
 [[bar]]
-label = ""
 command = "./bars/archlinux_updates.sh"
 interval=86400

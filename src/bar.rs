@@ -27,7 +27,7 @@ impl Default for BarChannel<Message> {
 
 #[derive(Debug, Deserialize)]
 struct Bar {
-    label: String,
+    label: Option<String>,
     command: String,
     args: Option<Vec<String>>,
     interval: u64,
@@ -98,7 +98,7 @@ impl Bar {
             .output()
             .expect("Error occurred");
         let res = String::from_utf8_lossy(&out.stdout);
-        let status_message = format!("{}{}", self.label, res.trim());
+        let status_message = format!("{}{}", self.label.as_ref().unwrap_or(&String::from("")), res.trim());
         Message(self.order, status_message)
     }
 }
