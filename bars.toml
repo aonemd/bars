@@ -21,3 +21,7 @@ interval = 1
 label = ""
 command = "./bars/darksky_weather.sh"
 interval = 600
+[[bar]]
+label = ""
+command = "./bars/media.sh"
+interval = 2
