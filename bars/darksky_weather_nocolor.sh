@@ -19,15 +19,9 @@ print_weather() {
   local fog_icon=''
   local celsius_icon='°C'
 
-  local sunny_color="^c#d5911a^"
-  local shiny_color='^c#f1efee^'
-  local fg_color='^c#a8a19f^'
-
-  local current_color=$shiny_color
-
   parse_weather_details
   case "${forecast}" in
-    clear-day)            current_icon=$clear_day_icon; current_color=$sunny_color;;
+    clear-day)            current_icon=$clear_day_icon;;
     clear-night)          current_icon=$clear_night_icon;;
     partly-cloudy-day)    current_icon=$partly_cloudy_day_icon;;
     partly-cloudy-night)  current_icon=$partly_cloudy_night_icon;;
@@ -39,7 +33,7 @@ print_weather() {
     fog)                  current_icon=$fog_icon;;
   esac
 
-  weather="${current_color}${current_icon} ${fg_color}${temperature}${celsius_icon}"
+  weather="${current_icon} ${temperature}${celsius_icon}"
   echo "${weather}"
 }
 
