@@ -13,10 +13,11 @@ print_battery() {
   local critical_level=30
 
   local charging_icon=''
-  local full_icon=' '
+  local full_icon=''
   local three_quarter_icon=''
   local half_icon=''
   local empty_icon=''
+
   local fg_color='^c#a8a19f^'
 
   parse_battery_details
