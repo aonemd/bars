@@ -25,7 +25,7 @@ impl Default for BarChannel<Message> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Bars {
+pub struct Runner {
     bar: Vec<Bar>,
     delim: Option<String>,
 
@@ -45,7 +45,7 @@ struct Bar {
     order: usize,
 }
 
-impl Bars {
+impl Runner {
     pub fn assign_default_attributes(&mut self) {
         for (index, bar) in self.bar.iter_mut().enumerate() {
             bar.order = index;
