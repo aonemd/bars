@@ -10,14 +10,14 @@ print_prayer() {
   parse_prayer_times
   [[ -z $seconds_left ]] && exit 0
 
-  report_mode=${BLOCK_INSTANCE:=0}
-  if [[ $report_mode == 1 ]]; then
+  report_mode=${PRAYER_REPORT_MODE:=0}
+  if [ $report_mode == 1 ]; then
     time_left=$(date -u -d "@${seconds_left}" +'%H:%M')
     prayer="${prayer_name} in ${time_left}"
-  elif [[ $report_mode == 2 ]]; then
+  elif [ $report_mode == 2 ]; then
     minutes_left=$(($seconds_left / 60))
     prayer="${prayer_name} in ${minutes_left} Minutes"
-  elif [[ $report_mode == 3 ]]; then
+  elif [ $report_mode == 3 ]; then
     hours_left=$(($seconds_left / 3600))
     prayer="${prayer_name} in ${hours_left} Hours"
   else
