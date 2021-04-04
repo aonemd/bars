@@ -43,7 +43,7 @@ parse_prayer_times() {
 
     local prayer_time_in_seconds=$(date -d "${prayer_parsed_time}" +"%s")
     local seconds_until_prayer=$(($prayer_time_in_seconds - $(date +'%s')))
-    if [[ $seconds_until_prayer > 0 ]]; then
+    if [ $seconds_until_prayer -gt 0 ]; then
       (( $seconds_until_prayer < min || min == 0 )) \
         && min=$seconds_until_prayer \
         && prayer_name=$prayer \
