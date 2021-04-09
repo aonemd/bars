@@ -17,12 +17,12 @@ print_media() {
 
   current_icon=$play_icon
 
-  if [ "$status" != 'playing' ]; then
-    current_icon=$stop_icon
+  if [ "$status" = 'No players found' ]; then
+    exit 0
   fi
 
-  if [ "$status" == 'No players found' ]; then
-    exit 1
+  if [ "$status" != 'playing' ]; then
+    current_icon=$stop_icon
   fi
 
   if [ $player == "chrome" -o $player == "firefox" ]; then
@@ -35,12 +35,14 @@ print_media() {
 }
 
 parse_media() {
-  local response=$(playerctl metadata)
+  local response=$(playerctl metadata 2> /dev/null)
+  [[ -z $response ]] && exit 0
+
   artist=$(echo "$response" | grep -o ':artist\s*\(.*\)' | sed 's/:artist\s*//g' | cut -c 1-30)
   title=$(echo "$response" | grep -o ':title\s*\(.*\)' | sed 's/:title\s*//g' | cut -c 1-60)
   player=$(echo "$response" | grep -o '^\w\+' | head -1)
 
-  status=$(playerctl metadata --format '{{lc(status)}}')
+  status=$(playerctl metadata --format '{{lc(status)}}' 2>/dev/null)
 }
 
 main "$@"
