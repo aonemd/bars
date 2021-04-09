@@ -13,7 +13,7 @@ main() {
   if [ $update_counter -ge $HIGHER_UPDATE_LIMIT ]; then
     echo " ^c#f22c40^$update_counter^c#a8a19f^"
   else
-    echo "$update_counter"
+    echo " $update_counter"
   fi
 
   exit 0
