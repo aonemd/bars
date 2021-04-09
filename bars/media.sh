@@ -19,17 +19,23 @@ print_media() {
     current_icon=$stop_icon
   fi
 
-  # if no artist or no title are found, quit
-  if [ ! -z "$artist" -o ! -z "$title" ]; then
-    media="${current_icon} ${artist} - ${title}"
-    echo "${media}"
+  if [ $player == "chrome" -o $player == "firefox" ]; then
+    media="${current_icon} ${title}"
+  else
+    # if no artist or no title are found, quit
+    if [ ! -z "$artist" -o ! -z "$title" ]; then
+      media="${current_icon} ${artist} - ${title}"
+    fi
   fi
+
+  echo "${media}"
 }
 
 parse_media() {
   local response=$(playerctl metadata)
   artist=$(echo "$response" | grep -o ':artist\s*\(.*\)' | sed 's/:artist\s*//g' | cut -c 1-30)
   title=$(echo "$response" | grep -o ':title\s*\(.*\)' | sed 's/:title\s*//g' | cut -c 1-60)
+  player=$(echo "$response" | grep -o '^\w\+' | head -1)
 
   status=$(playerctl metadata --format '{{lc(status)}}')
 }
