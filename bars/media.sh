@@ -14,10 +14,14 @@ print_media() {
   local stop_icon=""
 
   parse_media
+
   current_icon=$play_icon
+
   if [ "$status" != 'playing' ]; then
     current_icon=$stop_icon
-  elif [ "$status" != 'No players found' ]
+  fi
+
+  if [ "$status" == 'No players found' ]; then
     exit 1
   fi
 
