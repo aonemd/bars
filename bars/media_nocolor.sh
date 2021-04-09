@@ -27,7 +27,7 @@ print_media() {
     media_info="${artist} - ${title}"
   fi
 
-  echo "^c#d75f87^${current_icon}^c#a8a19f^ ${media_info}"
+  echo "${current_icon} ${media_info}"
 }
 
 parse_media() {
