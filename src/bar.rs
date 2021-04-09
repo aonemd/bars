@@ -75,9 +75,10 @@ impl Runner {
 
             let mut col: Vec<_> = status.iter().collect();
             col.sort_by(|a, b| b.0.cmp(&a.0));
-            let sorted_status: Vec<String> = col.iter().map(|e| (e.1).to_string()).collect();
-
+            let mut sorted_status: Vec<String> = col.iter().map(|e| (e.1).to_string()).collect();
+            sorted_status.retain(|s|!s.is_empty());
             let status = sorted_status.join(&delimeter.to_string());
+
             let _ = Command::new("xsetroot").arg("-name").arg(status).output();
         }
 
