@@ -28,8 +28,8 @@ print_media() {
 
 parse_media() {
   local response=$(playerctl metadata)
-  artist=$(echo "$response" | grep -o ':artist\s*\(.*\)' | sed 's/:artist\s*//g')
-  title=$(echo "$response" | grep -o ':title\s*\(.*\)' | sed 's/:title\s*//g')
+  artist=$(echo "$response" | grep -o ':artist\s*\(.*\)' | sed 's/:artist\s*//g' | cut -c 1-30)
+  title=$(echo "$response" | grep -o ':title\s*\(.*\)' | sed 's/:title\s*//g' | cut -c 1-60)
 
   status=$(playerctl metadata --format '{{lc(status)}}')
 }
