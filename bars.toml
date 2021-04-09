@@ -11,7 +11,7 @@ interval = 5
 command = "./bars/volume.sh"
 interval = 1
 [[bar]]
-label = " "
+label = ""
 command = "./bars/kb_layout.sh"
 interval = 1
 [[bar]]
