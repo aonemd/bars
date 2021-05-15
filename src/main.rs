@@ -7,7 +7,13 @@ use bar::Runner;
 
 #[derive(Debug, StructOpt)]
 struct Cli {
-    #[structopt(short = "C", long = "config", help = "Config file to load", parse(from_os_str), default_value = "bars.toml")]
+    #[structopt(
+        short = "C",
+        long = "config",
+        help = "Config file to load",
+        parse(from_os_str),
+        default_value = "bars.toml"
+    )]
     config_file: std::path::PathBuf,
 }
 

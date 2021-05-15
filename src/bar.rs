@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 use std::process::Command;
-use std::time::Duration;
+use std::sync::mpsc::{sync_channel, Receiver, SyncSender};
 use std::thread;
-use std::sync::mpsc::{sync_channel, SyncSender, Receiver};
+use std::time::Duration;
 
-use toml;
 use serde::Deserialize;
+use toml;
 
 #[derive(Debug)]
 struct Message(usize, String);
@@ -61,12 +61,10 @@ impl Runner {
         let delimeter = self.delim.unwrap_or(String::from(" "));
 
         for bar in self.bar.into_iter() {
-            thread::spawn(move || {
-                loop {
-                    let res = bar.run();
-                    bar.sender.send(res).unwrap();
-                    thread::sleep(Duration::from_secs(bar.interval));
-                }
+            thread::spawn(move || loop {
+                let res = bar.run();
+                bar.sender.send(res).unwrap();
+                thread::sleep(Duration::from_secs(bar.interval));
             });
         }
 
@@ -76,12 +74,11 @@ impl Runner {
             let mut col: Vec<_> = status.iter().collect();
             col.sort_by(|a, b| b.0.cmp(&a.0));
             let mut sorted_status: Vec<String> = col.iter().map(|e| (e.1).to_string()).collect();
-            sorted_status.retain(|s|!s.is_empty());
+            sorted_status.retain(|s| !s.is_empty());
             let status = sorted_status.join(&delimeter.to_string());
 
             let _ = Command::new("xsetroot").arg("-name").arg(status).output();
         }
-
     }
 
     fn assign_default_attributes(&mut self) {
@@ -99,7 +96,11 @@ impl Bar {
             .output()
             .expect("Error occurred");
         let res = String::from_utf8_lossy(&out.stdout);
-        let status_message = format!("{}{}", self.label.as_ref().unwrap_or(&String::from("")), res.trim());
+        let status_message = format!(
+            "{}{}",
+            self.label.as_ref().unwrap_or(&String::from("")),
+            res.trim()
+        );
         Message(self.order, status_message)
     }
 }
