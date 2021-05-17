@@ -29,7 +29,7 @@ print_prayer() {
 
 parse_prayer_times() {
   local api_parameters=$PRAYER_API_PARAMS
-  local api_url="http://api.aladhan.com/timingsByCity?${api_parameters}"
+  local api_url="http://api.aladhan.com/v1/timingsByCity?${api_parameters}"
 
   local response=$(curl -s "${api_url}")
   [[ -z $response ]] && exit 0
